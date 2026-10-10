@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>registration form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<style>
+    .field:focus-within .field-icon {
+        color: #9333ea;
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+</style>
+
+<body class="relative min-h-screen flex justify-center items-center bg-purple-900">
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50" style="background-image: url('./bg.jpg')">
+    </div>
+    <form id="register_form" class="relative w-80 flex flex-col gap-3 bg-transparent p-5 rounded-lg shadow">
+        <h2 class="m-2 text-center text-2xl font-bold text-white">Create Account</h2>
+        <label class="text-white font-medium drop-shadow ml-3" for="name">Name</label>
+        <div class="relative field">
+            <span class="field-icon absolute inset-y-0 left-4 flex items-center text-purple-200">
+                <i class="fa-solid fa-user"></i>
+            </span>
+            <input class="block w-full border-2 bg-transparent text-white rounded-3xl pl-11 pr-11 py-2
+                          focus:bg-white focus:text-black focus:border-purple-700
+                          focus:outline-none focus:ring-2 focus:ring-purple-500" type="text" id="name" required
+                minlength="3">
+        </div>
+
+        <label class="text-white font-medium drop-shadow ml-3" for="email">E-mail</label>
+        <div class="relative field">
+            <span class="field-icon absolute inset-y-0 left-4 flex items-center text-purple-200">
+                <i class="fa-solid fa-envelope"></i>
+            </span>
+            <input class="block w-full border-2 bg-transparent text-white rounded-3xl pl-11 pr-11 py-2
+                          focus:bg-white focus:text-black focus:border-purple-700
+                          focus:outline-none focus:ring-2 focus:ring-purple-500"
+                title="Enter a valid email like name@example.com" type="email" id="email" required>
+        </div>
+        <label class="text-white font-medium drop-shadow ml-3" for="pwd">Password</label>
+
+        <div class="relative field">
+            <span class="field-icon absolute inset-y-0 left-4 flex items-center text-purple-200">
+                <i class="fa-solid fa-lock"></i>
+            </span>
+
+            <input class="block w-full border-2 bg-transparent text-white rounded-3xl pl-11 pr-11 py-2
+                          focus:bg-white focus:text-black focus:border-purple-700
+                          focus:outline-none focus:ring-2 focus:ring-purple-500" type="password" id="pwd" required
+                minlength="6">
+        </div>
+        <label class="text-white font-medium drop-shadow ml-3" for="confirmpwd">Confirm Password</label>
+        <div class="relative field">
+            <span class="field-icon absolute inset-y-0 left-4 flex items-center z-10 text-purple-200">
+                <i class="fa-solid fa-lock"></i>
+            </span>
+
+            <input class="block w-full border-2 bg-transparent text-white rounded-3xl pl-11 pr-11 py-2
+                          focus:bg-white focus:text-black focus:border-purple-700
+                          focus:outline-none focus:ring-2 focus:ring-purple-500" type="password" id="confirmpwd"
+                required minlength="6">
+        </div>
+        <button id="submitBtn"
+            class="mt-2 border-2 border-purple-800 bg-white rounded-3xl px-2 py-2 text-purple-800 font-bold"
+            type="submit">Sign up</button>
+    </form>
+    <script>
+        //name validation
+        var nameInput = document.getElementById("name")
+        nameInput.addEventListener("invalid", function () {
+            if (nameInput.validity.valueMissing) {
+                nameInput.setCustomValidity("Name is required")
+            } else if (nameInput.validity.tooShort) {
+                nameInput.setCustomValidity("Name must be at least 3 characters")
+            }
+        })
+        nameInput.addEventListener("input", function () {
+            nameInput.setCustomValidity("")
+        })
+        //email validation
+        var emailInput = document.getElementById("email")
+        emailInput.addEventListener("invalid", function () {
+            if (emailInput.validity.valueMissing) {
+                emailInput.setCustomValidity("E-mail is required")
+            } else {
+                emailInput.setCustomValidity("Enter a valid email like name@example.com")
+            }
+        })
+        emailInput.addEventListener("input", function () {
+            emailInput.setCustomValidity("")
+        })
+
+        //password validation
+        var pwdInput = document.getElementById("pwd")
+        // console.log(pwd)
+        var cpwdInput = document.getElementById("confirmpwd")
+        //console.log(cpwdInput)
+        function checkMatch() {
+            if (cpwdInput.value === "") {
+                cpwdInput.setCustomValidity("")
+                return
+            }
+
+            if (pwdInput.value !== cpwdInput.value) {
+                cpwdInput.setCustomValidity("Passwords do not match")
+            } else {
+                cpwdInput.setCustomValidity("")
+            }
+        }
+        pwdInput.addEventListener("input", checkMatch)
+        cpwdInput.addEventListener("input", checkMatch)
+        var form = document.getElementById("register_form")
+        var submitBtn = document.getElementById("submitBtn")
+
+        function updateButton() {
+            submitBtn.disabled = !form.checkValidity()
+        }
+
+        form.addEventListener("input", updateButton)
+        updateButton()
+        form.addEventListener("submit", function (event) {
+            event.preventDefault()
+            var userName = encodeURIComponent(nameInput.value.trim())
+            form.reset()
+            updateButton()
+            window.location.href = "https://keerthika546.github.io/udemy-clone/?welcome=1&name=" + userName
+        })
+    </script>
+</body>
+
+</html>
